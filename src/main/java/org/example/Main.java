@@ -1,8 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
@@ -48,8 +46,36 @@ public class Main {
         String firstname = scanner.next();
         String lastname = scanner.next();
         String departament = scanner.next();
+
+        String countQuery = "SELECT COUNT(*) FROM Employees WHERE last_name = ?";
+        PreparedStatement countStmt = conn.prepareStatement(countQuery);
+        countStmt.setString(1, lastname);
+        ResultSet rs = countStmt.executeQuery();
+        int count = 0;
+        if (rs.next()) {
+            count = rs.getInt(1);
+        }
+
         EmailGenerator emailGenerator = new EmailGenerator(firstname, lastname, departament);
         emailGenerator.generateRandomPassword(12);
-        emailGenerator.generateEmail();
+
+        if (count > 0) {
+            emailGenerator.generateEmail(count + 1);
+        } else {
+            emailGenerator.generateEmail();
+        }
+
+        String insertQuery = "INSERT INTO Employees (first_name, last_name, email, department, password) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
+        insertStmt.setString(1, firstname);
+        insertStmt.setString(2, lastname);
+        insertStmt.setString(3, emailGenerator.getEmail());
+        insertStmt.setString(4, departament);
+        insertStmt.setString(5, emailGenerator.getPassword());
+
+        int rowsInserted = insertStmt.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("A new employee was inserted successfully!");
+        }
     }
 }

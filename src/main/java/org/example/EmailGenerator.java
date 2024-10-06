@@ -54,4 +54,13 @@ public class EmailGenerator {
     public void generateEmail(int number) {
         email = lastName + number + "@" + departament + ".ru";
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
 }
