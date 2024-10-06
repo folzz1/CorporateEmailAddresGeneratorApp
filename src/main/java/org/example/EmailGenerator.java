@@ -10,11 +10,12 @@ public class EmailGenerator {
     private String departament;
     private String email;
 
-    public EmailGenerator(String firstName, String lastName) {
+    public EmailGenerator(String firstName, String lastName, String departament) {
         this.firstName = firstName;
         this.lastName = lastName;
-        generateRandomPassword(12);
-        generateEmail();
+        this.departament = departament;
+        //generateRandomPassword(12);
+        //generateEmail();
     }
 
     public void generateRandomPassword(int length) {
@@ -47,6 +48,10 @@ public class EmailGenerator {
     }
 
     public void generateEmail() {
-        email = firstName + lastName + "@gmail.com";
+        email = lastName + "@" + departament + ".ru";
+    }
+
+    public void generateEmail(int number) {
+        email = lastName + number + "@" + departament + ".ru";
     }
 }
