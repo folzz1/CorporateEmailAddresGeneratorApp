@@ -14,8 +14,6 @@ public class EmailGenerator {
         this.firstName = firstName;
         this.lastName = lastName;
         this.departament = departament;
-        //generateRandomPassword(12);
-        //generateEmail();
     }
 
     public void generateRandomPassword(int length) {

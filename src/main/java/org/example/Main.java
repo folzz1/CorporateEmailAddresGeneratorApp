@@ -20,12 +20,14 @@ public class Main {
                 System.out.println("""
                                 Меню
                         1. Добавить нового сотрудника
+                        2. Показать всех сотрудников
                         0. Выход
                         """);
                 int choice = scanner.nextInt();
                 switch (choice) {
                     case 0 -> quit = true;
                     case 1 -> addEmployee(conn);
+                    case 2 -> showAllEmployees(conn);
                     default -> System.out.println("Invalid choice!");
                 }
             }
@@ -76,6 +78,24 @@ public class Main {
         int rowsInserted = insertStmt.executeUpdate();
         if (rowsInserted > 0) {
             System.out.println("A new employee was inserted successfully!");
+        }
+    }
+
+    public static void showAllEmployees(Connection conn) throws SQLException {
+        String query = "SELECT * FROM Employees";
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        System.out.println("\nСписок всех сотрудников:");
+        while (rs.next()) {
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String email = rs.getString("email");
+            String department = rs.getString("department");
+            String password = rs.getString("password");
+
+            System.out.printf("Имя: %s, Фамилия: %s, Email: %s, Департамент: %s, Пароль: %s%n",
+                    firstName, lastName, email, department, password);
         }
     }
 }
